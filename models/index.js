@@ -1,18 +1,32 @@
+require('dotenv').config();
+//console.log(process.env)
 const config = require("../config/db.config.js");
+const isProduction = process.env.NODE_ENV === 'production'
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
+
+
+const sequelize =  !isProduction ? new Sequelize(
+    process.env.DB_DATABASE,//config.DB,
+    process.env.DB_USER,//config.USER,
+    process.env.DB_PASSWORD,//config.PASSWORD,
   {
-    host: config.HOST,
-    dialect: config.dialect,
+    host: process.env.DB_HOST,//config.HOST,
+    dialect: process.env.DB_DIALECT,//config.dialect,
     operatorsAliases: false,
     pool: {
-      max: config.pool.max,
-      min: config.pool.min,
-      acquire: config.pool.acquire,
-      idle: config.pool.idle
+      max: +process.env.POOL_MAX,//config.pool.max,
+      min: +process.env.POOL_MIN,//config.pool.min,
+      acquire: process.env.POOL_ACQUIRE,//config.pool.acquire,
+      idle: process.env.POOL_IDLE,//config.pool.idle
+    }
+  }
+) :
+new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     }
   }
 );
