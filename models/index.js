@@ -1,6 +1,6 @@
 require('dotenv').config();
 //console.log(process.env)
-const config = require("../config/db.config.js");
+//const config = require("../config/db.config.js");
 const isProduction = process.env.NODE_ENV === 'production'
 const Sequelize = require("sequelize");
 
