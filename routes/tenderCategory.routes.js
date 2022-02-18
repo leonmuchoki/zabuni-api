@@ -1,4 +1,4 @@
-const controller = require("../controllers/tenderType.controller");
+const controller = require("../controllers/tenderCategory.controller");
 const { authJwt } = require("../middleware");
 
 module.exports = function(app) {
@@ -11,10 +11,10 @@ module.exports = function(app) {
   });
   
   app.post(
-    "/api/tender/types",
+    "/api/tender/categories",
     [authJwt.verifyToken, authJwt.isAdmin],
-    controller.createTenderType
+    controller.createTenderCategory
   );
 
-  app.get("/api/tender/types", controller.getAllTenderTypes);
+  app.get("/api/tender/categories", controller.getAllTenderCategories);
 };

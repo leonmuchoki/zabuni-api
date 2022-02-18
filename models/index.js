@@ -52,6 +52,7 @@ db.user.belongsToMany(db.role, {
 db.company = require("../models/company.model.js")(sequelize, Sequelize);
 db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
 db.tenderType = require("../models/tenderType.model")(sequelize, Sequelize);
+db.tenderCategory = require("../models/tenderCategory")(sequelize, Sequelize);
 db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
 db.categories = require("../models/category.model.js")(sequelize, Sequelize);
 
@@ -65,6 +66,12 @@ db.tenderType.hasMany(db.tender, { as: "tender" });
 db.tender.belongsTo(db.tenderType, {
   foreignKey: "tenderTypeId",
   as: "tenderType"
+});
+
+db.tenderCategory.hasMany(db.tender, { as: "tender" });
+db.tender.belongsTo(db.tenderCategory, {
+  foreignKey: "tenderCategoryId",
+  as: "tenderCategory"
 });
 
 db.sector.hasMany(db.company, { as: "company" });

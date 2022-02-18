@@ -6,6 +6,7 @@ const cors = require("cors");
 const { createInitialRoles } = require("./utilities/Roles");
 const { createInitialSectors } = require("./utilities/sectors");
 const { createInitialTenderTypes } = require("./utilities/tenderTypes");
+const { createInitialTenderCategories } = require("./utilities/tenderCategories");
 
 const app = express();
 var corsOptions = {
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./models");
+const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
 db.sequelize.sync({force: true}).then(() => {
 //db.sequelize.sync().then(() => {
@@ -27,6 +29,7 @@ db.sequelize.sync({force: true}).then(() => {
   createInitialRoles();
   createInitialSectors();
   createInitialTenderTypes();
+  createInitialTenderCategories();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
@@ -45,6 +48,7 @@ require('./routes/tender.routes')(app);
 require('./routes/role.routes')(app);
 require('./routes/sector.routes')(app);
 require('./routes/tenderType.routes')(app);
+require('./routes/tenderCategory.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

@@ -11,10 +11,10 @@ module.exports = function(app) {
   });
   
   app.post(
-    "/api/documenttypes",
+    "/api/document/types",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.createDocumentType
   );
 
-  app.get("/api/documenttypes", controller.getAllDocumentTypes);
+  app.get("/api/document/types", controller.getAllDocumentTypes);
 };
