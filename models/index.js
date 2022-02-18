@@ -30,9 +30,11 @@ new Sequelize(process.env.DATABASE_URL, {
     }
   }
 );
+
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
@@ -45,5 +47,41 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
-db.ROLES = ["business", "admin", "supplier"];
+//db.ROLES = ["business", "admin", "supplier"];
+
+db.company = require("../models/company.model.js")(sequelize, Sequelize);
+db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
+db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
+db.categories = require("../models/category.model.js")(sequelize, Sequelize);
+db.company.hasMany(db.tender, { as: "tender" });
+db.tender.belongsTo(db.company, {
+  foreignKey: "companyId",
+  as: "company"
+});
+db.sector.hasMany(db.company, { as: "company" });
+db.company.belongsTo(db.sector, {
+  foreignKey: "sectorId",
+  as: "sector"
+});
+db.sector.hasMany(db.tender, { as: "tenders" });
+db.tender.belongsTo(db.sector, {
+  foreignKey: "sectorId",
+  as: "sector"
+});
+//db.SECTORS = ["PUBLIC", "PRIVATE", "NGO","INSTITUTION","PARASTATAL", "CHURCH", "SACCO"];
+
+db.document = require("../models/document.model.js")(sequelize, Sequelize);
+db.documentType = require("../models/documentType.model")(sequelize, Sequelize);
+db.documentType.hasMany(db.document, { as: "documents" });
+db.document.belongsTo(db.documentType, {
+  foreignKey: "documentTypeId",
+  as: "documentType"
+});
+
+db.user.hasMany(db.document, { as: "documents" });
+db.document.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user"
+});
+
 module.exports = db;
