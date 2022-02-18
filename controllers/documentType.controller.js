@@ -16,7 +16,7 @@ exports.createDocumentType = (req, res) => {
     });
 };
 
-exports.getAllDocumentTypes = () => {
+exports.getAllDocumentTypes = (req, res) => {
     return DocumentType.findAll().then((documentTypes) => {
     return res.status(200).send({documentTypes});
 })

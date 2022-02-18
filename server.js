@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { createInitialRoles } = require("./utilities/Roles");
 const { createInitialSectors } = require("./utilities/sectors");
+const { createInitialTenderTypes } = require("./utilities/tenderTypes");
 
 const app = express();
 var corsOptions = {
@@ -25,6 +26,7 @@ db.sequelize.sync({force: true}).then(() => {
   //initial();
   createInitialRoles();
   createInitialSectors();
+  createInitialTenderTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
@@ -42,6 +44,7 @@ require('./routes/documentType.routes')(app);
 require('./routes/tender.routes')(app);
 require('./routes/role.routes')(app);
 require('./routes/sector.routes')(app);
+require('./routes/tenderType.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
