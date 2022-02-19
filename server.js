@@ -7,6 +7,7 @@ const { createInitialRoles } = require("./utilities/Roles");
 const { createInitialSectors } = require("./utilities/sectors");
 const { createInitialTenderTypes } = require("./utilities/tenderTypes");
 const { createInitialTenderCategories } = require("./utilities/tenderCategories");
+const { createInitialDocumentTypes } = require("./utilities/documentTypes");
 
 const app = express();
 var corsOptions = {
@@ -30,6 +31,7 @@ db.sequelize.sync({force: true}).then(() => {
   createInitialSectors();
   createInitialTenderTypes();
   createInitialTenderCategories();
+  createInitialDocumentTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });

@@ -45,7 +45,7 @@ exports.getAllDocuments = (req, res) => {
 .catch((err) => {
     console.log(">> Error while loading  document: ", err);
     res.status(500).send({ message: err.message });
-    });;
+    });
 };
 
 exports.findUserDocuments = (req, res) => {
