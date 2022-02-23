@@ -14,4 +14,11 @@ exports.createInitialRoles = () => {
         id: 3,
         name: "admin"
     });
+    Role.create({
+        id: 4,
+        name: "staff",
+        description: "can do other stuff. Can be added only by admin"
+    });
   };
+
+  exports.ROLES = ["organization","supplier","admin","staff"];
