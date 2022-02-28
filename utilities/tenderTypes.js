@@ -1,9 +1,13 @@
 const db = require("../models");
 const Tendertype = db.tenderType;
-// ["PUBLIC", "PRIVATE", "NGO","INSTITUTION","PARASTATAL", "CHURCH", "SACCO"];
+// TODO:
+/*
+Depending on each tender types, there are specific documents you are required to submit
+*/
 exports.createInitialTenderTypes = () => {
     Tendertype.create({
         name: "Invitation-toTender",
+        
         description: "Invitation to Tender"
     });
     Tendertype.create({
