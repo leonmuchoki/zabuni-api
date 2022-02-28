@@ -15,24 +15,7 @@ exports.createTender = (req, res) => {
     sectorId: req.body.sectorId
   })
     .then(tender => {
-      if (req.body.sectors) {
-        Sector.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.sectors
-            }
-          }
-        }).then(sectors => {
-            tender.setSectors(sectors).then(() => {
-            res.send({ message: "Tender was registered successfully!" });
-          });
-        });
-      } else {
-        // user sector = 1
-        tender.setSectors([1]).then(() => {
-          res.send({ message: "Tender was registered successfully!" });
-        });
-      }
+        res.send({ message: "Tender was registered successfully!", tender: tender });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
