@@ -56,19 +56,19 @@ db.tenderCategory = require("../models/tenderCategory")(sequelize, Sequelize);
 db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
 db.categories = require("../models/category.model.js")(sequelize, Sequelize);
 
-db.company.hasMany(db.tender, { as: "tender" });
+db.company.hasMany(db.tender, { as: "tenders" });
 db.tender.belongsTo(db.company, {
   foreignKey: "companyId",
   as: "company"
 });
 
-db.tenderType.hasMany(db.tender, { as: "tender" });
+db.tenderType.hasMany(db.tender, { as: "tenders" });
 db.tender.belongsTo(db.tenderType, {
   foreignKey: "tenderTypeId",
   as: "tenderType"
 });
 
-db.tenderCategory.hasMany(db.tender, { as: "tender" });
+db.tenderCategory.hasMany(db.tender, { as: "tenders" });
 db.tender.belongsTo(db.tenderCategory, {
   foreignKey: "tenderCategoryId",
   as: "tenderCategory"
