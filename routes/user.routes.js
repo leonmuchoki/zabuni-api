@@ -24,4 +24,7 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  //TODO: should only admin pull data
+  app.get("/api/user/:userId",[authJwt.verifyToken], controller.findUserById);
 };

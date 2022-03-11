@@ -49,6 +49,13 @@ db.user.belongsToMany(db.role, {
 });
 //db.ROLES = ["business", "admin", "supplier"];
 
+db.business = require("../models/business.model")(sequelize, Sequelize);
+db.user.hasMany(db.business, { as: "business" });
+db.business.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user"
+});
+
 db.company = require("../models/company.model.js")(sequelize, Sequelize);
 db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
 db.tenderType = require("../models/tenderType.model")(sequelize, Sequelize);
@@ -99,6 +106,13 @@ db.user.hasMany(db.document, { as: "documents" });
 db.document.belongsTo(db.user, {
   foreignKey: "userId",
   as: "user"
+});
+
+db.businessDocument = require("../models/businessDocument.model")(sequelize, Sequelize);
+db.business.hasMany(db.businessDocument, { as: "businessDocuments" });
+db.businessDocument.belongsTo(db.business, {
+  foreignKey: "businessId",
+  as: "business"
 });
 
 module.exports = db;
