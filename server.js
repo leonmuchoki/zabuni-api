@@ -3,6 +3,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsondoc = require("swagger-jsdoc");
+
+const { swaggerOptions } = require("./swagger/options")
 const { createInitialRoles } = require("./utilities/Roles");
 const { createInitialSectors } = require("./utilities/sectors");
 const { createInitialTenderTypes } = require("./utilities/tenderTypes");
@@ -20,11 +24,26 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get("/hello", (req, res) => {
+  res.json("Hello world!");
+});
+
+
+const specs = swaggerJsondoc(swaggerOptions);
+app.use("/docs", swaggerUi.serve);
+app.get(
+  "/docs",
+  swaggerUi.setup(specs, {
+    explorer: true
+  })
+);
+
+
 const db = require("./models");
 const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
-db.sequelize.sync({force: true}).then(() => {
-//db.sequelize.sync().then(() => {
+//db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   //initial();
   createInitialRoles();
@@ -52,6 +71,7 @@ require('./routes/sector.routes')(app);
 require('./routes/tenderType.routes')(app);
 require('./routes/tenderCategory.routes')(app);
 require('./routes/business.routes')(app);
+require('./routes/tenderDocument.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
