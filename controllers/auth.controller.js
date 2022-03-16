@@ -24,19 +24,90 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ message: "User was registered successfully!", user });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
+          res.send({ message: "User was registered successfully!", user });
         });
       }
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.CreateContractingAuthority = (req, res) => {
+  console.log("req.body" + JSON.stringify(req.body));
+  // check company id exists before creating CA user
+  let company = Company.findByPk({where: {id:  req.body.companyId}});
+  if(!company) return res.status(500).send({ message: "Company ID does not exist." });
+
+  User.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 8),
+    companyId: req.body.companyId
+  })
+    .then(user => {
+      if (req.body.roles) {
+        Role.findAll({
+          where: {
+            name: {
+              [Op.or]: req.body.roles
+            }
+          }
+        }).then(roles => {
+          user.setRoles(roles).then(() => {
+            res.send({ message: "User was registered successfully!", user });
+          });
+        });
+      } else {
+        // user role = 1
+        user.setRoles([1]).then(() => {
+          res.send({ message: "User was registered successfully!", user });
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+
+exports.signUpSupplier = (req, res) => {
+  console.log("req.body" + JSON.stringify(req.body));
+// Save User to Database
+User.create({
+  username: req.body.username,
+  email: req.body.email,
+  password: bcrypt.hashSync(req.body.password, 8)
+})
+  .then(user => {
+    if (req.body.roles) {
+      Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        }
+      }).then(roles => {
+        user.setRoles(roles).then(() => {
+          res.send({ message: "User was registered successfully!" });
+        });
+      });
+    } else {
+      // user role = 1
+      user.setRoles([1]).then(() => {
+        res.send({ message: "User was registered successfully!" });
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+  });
 };
 
 exports.signin = (req, res) => {

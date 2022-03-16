@@ -11,11 +11,12 @@ module.exports = function(app) {
   });
   
   app.post(
-    "/api/company",
+    "/api/companies",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.createCompany
   );
 
   app.get("/api/companies", controller.findAllCompanies);
-  app.get("/api/company/verify/:companyId", controller.verifyCompany);
+  //TODO: Add verification and post method
+  app.get("/api/company/verify/:companyId",[authJwt.verifyToken, authJwt.isAdmin], controller.verifyCompany);
 };

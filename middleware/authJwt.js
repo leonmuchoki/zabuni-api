@@ -19,6 +19,7 @@ verifyToken = (req, res, next) => {
     next();
   });
 };
+
 isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -35,6 +36,41 @@ isAdmin = (req, res, next) => {
     });
   });
 };
+
+isStaff = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "staff") {
+          next();
+          return;
+        }
+      }
+      res.status(403).send({
+        message: "Require Staff Role!"
+      });
+      return;
+    });
+  });
+};
+
+isContractingAuthority = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "contracting authority") {
+          next();
+          return;
+        }
+      }
+      res.status(403).send({
+        message: "Require contracting authority Role!"
+      });
+      return;
+    });
+  });
+};
+
 isSupplier = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -65,11 +101,11 @@ isBusiness = (req, res, next) => {
       });
     });
   };
-isModeratorOrAdmin = (req, res, next) => {
+isContractingAuthorityOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
+        if (roles[i].name === "contracting authority") {
           next();
           return;
         }
@@ -79,16 +115,40 @@ isModeratorOrAdmin = (req, res, next) => {
         }
       }
       res.status(403).send({
-        message: "Require Moderator or Admin Role!"
+        message: "Require Contracting Authority or Admin Role!"
       });
     });
   });
 };
+
+isStaffOrAdmin = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "staff") {
+          next();
+          return;
+        }
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+      res.status(403).send({
+        message: "Require Contracting Authority or Admin Role!"
+      });
+    });
+  });
+};
+
 const authJwt = {
   verifyToken: verifyToken,
-  isAdmin: isAdmin,
-  isModeratorOrAdmin: isModeratorOrAdmin,
-  isBusiness: isBusiness,
-  isSupplier: isSupplier
+  isAdmin,
+  isContractingAuthorityOrAdmin,
+  isBusiness,
+  isSupplier,
+  isStaffOrAdmin,
+  isStaff,
+  isContractingAuthority
 };
 module.exports = authJwt;

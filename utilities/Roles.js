@@ -19,6 +19,11 @@ exports.createInitialRoles = () => {
         name: "staff",
         description: "can do other stuff. Can be added only by admin"
     });
+    Role.create({
+        id: 5,
+        name: "contracting authority",
+        description: "Belongs to company owning tender. Can be added only by admin"
+    });
   };
 
-  exports.ROLES = ["organization","supplier","admin","staff"];
+  exports.ROLES = ["organization","supplier","admin","staff", "contracting authority"];

@@ -16,5 +16,6 @@ module.exports = function(app) {
     controller.createRole
   );
   
-  app.get("/api/roles", controller.getAllRoles);
+  //TODO: ensure is admin
+  app.get("/api/roles",  controller.getAllRoles);
 };
