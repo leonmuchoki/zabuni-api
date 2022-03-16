@@ -46,11 +46,11 @@ const Role = db.role;
 db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   //initial();
-  createInitialRoles();
-  createInitialSectors();
-  createInitialTenderTypes();
-  createInitialTenderCategories();
-  createInitialDocumentTypes();
+  //createInitialRoles();
+  //createInitialSectors();
+  //createInitialTenderTypes();
+  //createInitialTenderCategories();
+  //createInitialDocumentTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
