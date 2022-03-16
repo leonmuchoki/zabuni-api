@@ -1,3 +1,5 @@
+//TODO: Notification for new tenders
+
 require('dotenv').config();
 //console.log(process.env)
 //const config = require("../config/db.config.js");
@@ -60,6 +62,7 @@ db.company = require("../models/company.model.js")(sequelize, Sequelize);
 db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
 db.tenderType = require("../models/tenderType.model")(sequelize, Sequelize);
 db.tenderCategory = require("../models/tenderCategory")(sequelize, Sequelize);
+db.tenderDocument = require("../models/tenderDocument.model")(sequelize, Sequelize);
 db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
 db.categories = require("../models/category.model.js")(sequelize, Sequelize);
 
@@ -79,6 +82,12 @@ db.tenderCategory.hasMany(db.tender, { as: "tenders" });
 db.tender.belongsTo(db.tenderCategory, {
   foreignKey: "tenderCategoryId",
   as: "tenderCategory"
+});
+
+db.tender.hasMany(db.tenderDocument, { as: "tenderDocuments" });
+db.tenderDocument.belongsTo(db.tender, {
+  foreignKey: "tenderId",
+  as: "tender"
 });
 
 db.sector.hasMany(db.company, { as: "company" });

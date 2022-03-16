@@ -8,6 +8,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       closing_date: {
           type: DataTypes.DATE
+      },
+      tenderSecurity: {
+        type: DataTypes.DECIMAL,
+        defaultValue: 0.0
+      },
+      views: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      ratings: {
+        type: DataTypes.INTEGER
       }
     });
     return Tender;

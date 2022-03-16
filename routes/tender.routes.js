@@ -12,9 +12,10 @@ module.exports = function(app) {
 
   app.post(
     "/api/tenders",
-    [authJwt.verifyToken],
+    [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin],
     controller.createTender
   );
   
   app.get("/api/tenders", controller.getAllTenders);
+  app.post("/api/tender/views/:tenderId", controller.updateViews);
 };
