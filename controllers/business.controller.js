@@ -4,6 +4,7 @@ const Business = db.business;
 exports.createBusiness = (req, res) => {
   Business.create({
     name: req.body.name,
+    registration_number: req.body.name,
     description: req.body.description,
     location: req.body.location,
     phone: req.body.phone,
@@ -25,6 +26,17 @@ exports.findBusinessById = (req, res) => {
       })
       .catch((err) => {
         console.log(">> Error while finding comment: ", err);
+        res.status(500).send({ message: err.message });
+      });
+  };
+
+  exports.findSupplierBusiness = (req, res) => {
+    return Business.findByPk({where: {userId:  req.params.userId}})
+      .then((business) => {
+        return res.status(200).send({business});
+      })
+      .catch((err) => {
+        console.log(">> Error while finding business: ", err);
         res.status(500).send({ message: err.message });
       });
   };

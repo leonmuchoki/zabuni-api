@@ -11,6 +11,8 @@
  *     description: Created by admin or user with role "contracting authority" belonging to company. A tender belongs to a certain sector and/or tender category
  *   - name: Company
  *     description: Companies/Organization owning tenders. Managed by admin and/or user with role "contracting authority"
+ *   - name: Business
+ *     description: Business belonging to Supplier. Managed by user with role supplier. Used to bid tenders
  *   - name: Role
  *     description: Roles used in the system
  */
@@ -200,6 +202,69 @@
  *                type: object
  *        "500":
  *          description: Failed to create company
+ *  /api/business:
+ *    post:
+ *      summary: create a supplier business
+ *      parameters:
+ *        - in: body
+ *          name: body
+ *          schema: 
+ *            $ref: "#/definitions/CreateBusiness"
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *        "500":
+ *          description: Failed to create business
+ *  /api/business/{businessId}:
+ *    get:
+ *      summary: Get supplier business
+ *      parameters:
+ *        - in: path
+ *          name: userId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *  /api/business/documents/{businessId}:
+ *    get:
+ *      summary: Get all business documents
+ *      parameters:
+ *        - in: path
+ *          name: businessId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *    post:
+ *      summary: create a Business Document
+ *      parameters:
+ *        - in: body
+ *          name: body
+ *          schema: 
+ *            $ref: "#/definitions/CreateBusinessDocument"
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *        "500":
+ *          description: Failed to create business document
  */
 
 /**
@@ -312,4 +377,42 @@
  *     required:
  *       - name
  *       - description
+ *   CreateBusiness:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *       registration_number:
+ *         type: string
+ *       description:
+ *         type: string
+ *       location:
+ *         type: string
+ *       phone:
+ *         type: string
+ *       address: 
+ *         type: string
+ *       userId: 
+ *         type: integer
+ *     required:
+ *       - name
+ *       - registration_number
+ *   CreateBusinessDocument:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *       description:
+ *         type: string
+ *       extension:
+ *         type: string
+ *       fileSize:
+ *         type: string
+ *       file: 
+ *         type: array
+ *       businessId: 
+ *         type: integer
+ *     required:
+ *       - name
+ *       - businessId 
  */

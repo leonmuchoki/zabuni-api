@@ -1,6 +1,14 @@
+//TODO:
+/*
+-Incorporation/Registration number
+*/
 module.exports = (sequelize, DataTypes) => {
     const Business = sequelize.define("business", {
         name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        registration_number: {
             type: DataTypes.STRING,
             allowNull: false
         },
