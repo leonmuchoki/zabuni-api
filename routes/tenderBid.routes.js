@@ -13,7 +13,7 @@ module.exports = function(app) {
   app.post(
     "/api/tender/bid",
     [authJwt.verifyToken, authJwt.isSupplier],
-    controller.createTender
+    controller.createTenderBid
   );
   
   app.get("/api/tender/bid/:tenderId", controller.findBidByTenderId);

@@ -176,7 +176,7 @@
  *                type: object
  *        "500":
  *          description: Failed to update tender views
- *  /api/category/tenders/:tenderCategoryId
+ *  /api/category/tenders/{tenderCategoryId}:
  *    get:
  *      summary: Get all category tenders
  *      parameters:
@@ -191,7 +191,7 @@
  *            application/json:
  *              schema:
  *                type: object
- *  /api/sector/tenders/:sectorId
+ *  /api/sector/tenders/{sectorId}:
  *    get:
  *      summary: Get all sector tenders
  *      parameters:
