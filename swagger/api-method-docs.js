@@ -387,7 +387,6 @@
  *       roles:
  *         type: array
  *     required:
- *       - username
  *       - email
  *       - password
  *       - roles
