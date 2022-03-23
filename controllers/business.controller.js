@@ -23,7 +23,7 @@ exports.createBusiness = (req, res) => {
 };
 
 exports.findBusinessById = (req, res) => {
-    return Business.findByPk({where: {id:  req.params.id}}, { include: ["sector", "businessDirectors"] })
+    return Business.findOne({where: {id:  req.params.id}}, { include: ["sector", "businessDirectors"] })
       .then((business) => {
         return res.status(200).send({business});
       })
@@ -34,7 +34,7 @@ exports.findBusinessById = (req, res) => {
   };
 
   exports.findSupplierBusiness = (req, res) => {
-    return Business.findByPk({where: {userId:  req.params.userId, isContractingAuthority: false}})
+    return Business.findOne({where: {userId:  req.params.userId, isContractingAuthority: false}})
       .then((business) => {
         return res.status(200).send({business});
       })

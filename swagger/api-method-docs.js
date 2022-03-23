@@ -249,7 +249,7 @@
  *                type: object
  *        "500":
  *          description: Failed to create business
- *  /api/business/{businessId}:
+ *  /api/business/{userId}:
  *    get:
  *      summary: Get supplier business
  *      parameters:

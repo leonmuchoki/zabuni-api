@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.user;
 
 exports.findUserById = (req, res) => {
-  return User.findByPk(req.params.userId, {include: ["business"]})
+  return User.findOne(req.params.userId, {include: ["business"]})
     .then((user) => {
       return res.status(200).send({user});
     })
