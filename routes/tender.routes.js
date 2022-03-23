@@ -17,5 +17,7 @@ module.exports = function(app) {
   );
   
   app.get("/api/tenders", controller.getAllTenders);
+  app.get("/api/category/tenders/:tenderCategoryId", controller.findCategoryTenders);
+  app.get("/api/sector/tenders/:sectorId", controller.findSectorTenders);
   app.post("/api/tender/views/:tenderId", controller.updateViews);
 };

@@ -6,18 +6,19 @@ const Op = db.Sequelize.Op;
 
 exports.createTender = (req, res) => {
     console.log("req.body" + JSON.stringify(req.body));
-  // Save User to Database
   Tender.create({
     name: req.body.name,
     description: req.body.description,
     closing_date: req.body.closing_date,
-    companyId: req.body.companyId,
+    closing_time: req.body.closing_time,
+    businessId: req.body.businessId,
     sectorId: req.body.sectorId,
     tenderCategoryId: req.body.tenderCategoryId,
+    tenderTypeId: req.body.tenderTypeId,
     tenderSecurity: req.body.tenderSecurity
   })
     .then(tender => {
-        res.send({ message: "Tender was registered successfully!", tender: tender });
+        res.send({ message: "Tender was registered successfully!", tender});
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
@@ -43,7 +44,7 @@ exports.findTenderByName = (req, res) => {
 };
 
 exports.findTenderById = (req, res) => {
-    return Tender.findByPk({where: {id:  req.params.id}}, { include: ["sector", "tenderCategory","company"] })
+    return Tender.findByPk({where: {id:  req.params.id}}, { include: ["sector", "tenderCategory","tenderType","business"] })
       .then((tender) => {
         //return tender;
         return res.status(200).send({tender});
@@ -52,7 +53,43 @@ exports.findTenderById = (req, res) => {
         console.log(">> Error while finding comment: ", err);
         res.status(500).send({ message: err.message });
       });
-  };
+};
+
+exports.findCategoryTenders = (req, res) => {
+  return Tender.findByPk({where: {tenderCategoryId:  req.params.tenderCategoryId}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+    .then((tender) => {
+      //return tender;
+      return res.status(200).send({tender});
+    })
+    .catch((err) => {
+      console.log(">> Error while finding comment: ", err);
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.findSectorTenders = (req, res) => {
+  return Tender.findByPk({where: {sectorId:  req.params.sectorId}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+    .then((tender) => {
+      //return tender;
+      return res.status(200).send({tender});
+    })
+    .catch((err) => {
+      console.log(">> Error while finding comment: ", err);
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.findContractingAuthorityTenders = (req, res) => {
+  return Tender.findByPk({where: {businessId:  req.params.businessId}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+    .then((tender) => {
+      //return tender;
+      return res.status(200).send({tender});
+    })
+    .catch((err) => {
+      console.log(">> Error while finding comment: ", err);
+      res.status(500).send({ message: err.message });
+    });
+};
 
 exports.getAllTenders = (req, res) => {
     return Tender.findAll({

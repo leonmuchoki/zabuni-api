@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const TenderDocument = sequelize.define("tenderDocuments", {
+    const TenderBidDocument = sequelize.define("tenderBidDocuments", {
       name: {
         type: DataTypes.STRING
       },
@@ -16,5 +16,5 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.BLOB('long')
       }
     });
-    return TenderDocument;
+    return TenderBidDocument;
   };

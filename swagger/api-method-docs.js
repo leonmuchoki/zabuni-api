@@ -176,6 +176,36 @@
  *                type: object
  *        "500":
  *          description: Failed to update tender views
+ *  /api/category/tenders/:tenderCategoryId
+ *    get:
+ *      summary: Get all category tenders
+ *      parameters:
+ *        - in: path
+ *          name: tenderCategoryId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *  /api/sector/tenders/:sectorId
+ *    get:
+ *      summary: Get all sector tenders
+ *      parameters:
+ *        - in: path
+ *          name: sectorId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
  *  /api/companies:
  *    get:
  *      summary: Get all companies
@@ -265,6 +295,83 @@
  *                type: object
  *        "500":
  *          description: Failed to create business document
+ *  /api/business/directors/{businessId}:
+ *    get:
+ *      summary: Get all business directors
+ *      parameters:
+ *        - in: path
+ *          name: businessId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *    post:
+ *      summary: create a Business director
+ *      parameters:
+ *        - in: body
+ *          name: body
+ *          schema: 
+ *            $ref: "#/definitions/CreateBusinessDirector"
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *        "500":
+ *          description: Failed to create business director
+ *  /api/tender/bid/{tenderId}:
+ *    get:
+ *      summary: Get all tender bids
+ *      parameters:
+ *        - in: path
+ *          name: tenderId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *    post:
+ *      summary: create a Tender bid
+ *      parameters:
+ *        - in: body
+ *          name: body
+ *          schema: 
+ *            $ref: "#/definitions/CreateTenderBid"
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *        "500":
+ *          description: Failed to create tender bid
+ *  /api/business/bid/{businessId}:
+ *    get:
+ *      summary: Get all business bids
+ *      parameters:
+ *        - in: path
+ *          name: businessId
+ *          type: integer
+ *          required: true
+ *      responses:
+ *        "200":
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
  */
 
 /**
@@ -273,8 +380,6 @@
  *   CreateUser:
  *     type: object
  *     properties:
- *       username:
- *         type: string
  *       email:
  *         type: string
  *       password:
@@ -289,8 +394,6 @@
  *   CreateContractingAuthority:
  *     type: object
  *     properties:
- *       username:
- *         type: string
  *       email:
  *         type: string
  *       password:
@@ -342,6 +445,8 @@
  *       description:
  *         type: string
  *       closing_date:
+ *         type: string
+ *       closing_time:
  *         type: string
  *       companyId:
  *         type: integer
@@ -414,5 +519,28 @@
  *         type: integer
  *     required:
  *       - name
+ *       - businessId
+ *   CreateBusinessDirector:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *       id_number:
+ *         type: string
+ *     required:
+ *       - name
+ *       - id_number  
+ *   CreateTenderBid:
+ *     type: object
+ *     properties:
+ *       bid_amount:
+ *         type: string
+ *       tenderId:
+ *         type: integer
+ *       businessId:
+ *         type: integer
+ *     required:
+ *       - bid_amount
+ *       - tenderId 
  *       - businessId 
  */

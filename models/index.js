@@ -39,6 +39,20 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.business = require("../models/business.model")(sequelize, Sequelize);
+db.company = require("../models/company.model.js")(sequelize, Sequelize);
+db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
+db.tenderType = require("../models/tenderType.model")(sequelize, Sequelize);
+db.tenderCategory = require("../models/tenderCategory")(sequelize, Sequelize);
+db.tenderDocument = require("../models/tenderDocument.model")(sequelize, Sequelize);
+db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
+db.categories = require("../models/category.model.js")(sequelize, Sequelize);
+db.document = require("../models/document.model.js")(sequelize, Sequelize);
+db.documentType = require("../models/documentType.model")(sequelize, Sequelize);
+db.businessDocument = require("../models/businessDocument.model")(sequelize, Sequelize);
+db.businessDirector = require("../models/businessDirector.model")(sequelize, Sequelize);
+db.tenderBid = require("../models/tenderBid.model")(sequelize, Sequelize);
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -51,23 +65,20 @@ db.user.belongsToMany(db.role, {
 });
 //db.ROLES = ["business", "admin", "supplier"];
 
-db.business = require("../models/business.model")(sequelize, Sequelize);
 db.user.hasMany(db.business, { as: "business" });
 db.business.belongsTo(db.user, {
   foreignKey: "userId",
   as: "user"
 });
 
-db.company = require("../models/company.model.js")(sequelize, Sequelize);
-db.tender = require("../models/tender.model.js")(sequelize, Sequelize);
-db.tenderType = require("../models/tenderType.model")(sequelize, Sequelize);
-db.tenderCategory = require("../models/tenderCategory")(sequelize, Sequelize);
-db.tenderDocument = require("../models/tenderDocument.model")(sequelize, Sequelize);
-db.sector = require("../models/sector.model.js")(sequelize, Sequelize);
-db.categories = require("../models/category.model.js")(sequelize, Sequelize);
+db.sector.hasMany(db.business, { as: "business" });
+db.business.belongsTo(db.sector, {
+  foreignKey: "sectorId",
+  as: "sector"
+});
 
-db.company.hasMany(db.tender, { as: "tenders" });
-db.tender.belongsTo(db.company, {
+db.business.hasMany(db.tender, { as: "tenders" });
+db.tender.belongsTo(db.business, {
   foreignKey: "companyId",
   as: "company"
 });
@@ -90,6 +101,14 @@ db.tenderDocument.belongsTo(db.tender, {
   as: "tender"
 });
 
+db.tender.hasMany(db.tenderBid, { as: "tenderBids" });
+db.tenderBid.belongsTo(db.tender, {
+  foreignKey: "tenderId",
+  as: "tender"
+});
+
+db.tenderBid.belongsTo(db.business);
+
 db.sector.hasMany(db.company, { as: "company" });
 db.company.belongsTo(db.sector, {
   foreignKey: "sectorId",
@@ -103,8 +122,7 @@ db.tender.belongsTo(db.sector, {
 });
 //db.SECTORS = ["PUBLIC", "PRIVATE", "NGO","INSTITUTION","PARASTATAL", "CHURCH", "SACCO"];
 
-db.document = require("../models/document.model.js")(sequelize, Sequelize);
-db.documentType = require("../models/documentType.model")(sequelize, Sequelize);
+
 db.documentType.hasMany(db.document, { as: "documents" });
 db.document.belongsTo(db.documentType, {
   foreignKey: "documentTypeId",
@@ -117,9 +135,14 @@ db.document.belongsTo(db.user, {
   as: "user"
 });
 
-db.businessDocument = require("../models/businessDocument.model")(sequelize, Sequelize);
 db.business.hasMany(db.businessDocument, { as: "businessDocuments" });
 db.businessDocument.belongsTo(db.business, {
+  foreignKey: "businessId",
+  as: "business"
+});
+
+db.business.hasMany(db.businessDirector, { as: "businessDirectors" });
+db.businessDirector.belongsTo(db.business, {
   foreignKey: "businessId",
   as: "business"
 });

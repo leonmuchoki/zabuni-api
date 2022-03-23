@@ -42,15 +42,15 @@ app.get(
 const db = require("./models");
 const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
-//db.sequelize.sync({force: true}).then(() => {
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force: true}).then(() => {
+//db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
-  //initial();
-  //createInitialRoles();
-  //createInitialSectors();
-  //createInitialTenderTypes();
-  //createInitialTenderCategories();
-  //createInitialDocumentTypes();
+  //--initial();
+  createInitialRoles();
+  createInitialSectors();
+  createInitialTenderTypes();
+  createInitialTenderCategories();
+  createInitialDocumentTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
@@ -70,8 +70,10 @@ require('./routes/role.routes')(app);
 require('./routes/sector.routes')(app);
 require('./routes/tenderType.routes')(app);
 require('./routes/tenderCategory.routes')(app);
-require('./routes/business.routes')(app);
+require('./routes/tenderBid.routes')(app);
 require('./routes/tenderDocument.routes')(app);
+require('./routes/business.routes')(app);
+require('./routes/businessDirector.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

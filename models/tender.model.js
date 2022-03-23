@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       closing_date: {
           type: DataTypes.DATE
       },
+      closing_time: {
+        type: DataTypes.STRING
+      },
       tenderSecurity: {
         type: DataTypes.DECIMAL,
         defaultValue: 0.0

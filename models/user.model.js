@@ -4,15 +4,17 @@
 -later to automate
 -notify supplier of verification
 
+-user model -> holds info for both supplier and CA. 
+   -business name
+   -email
+   -password
+   -verified: 
 +company:
 -admins manually
 -admin verify manually
 */
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("users", {
-      username: {
-        type: Sequelize.STRING
-      },
       email: {
         type: Sequelize.STRING
       },
@@ -21,6 +23,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       mobile: {
         type: Sequelize.STRING
+      },
+      verified: {
+        type: Sequelize.BOOLEAN
       },
       companyId: {
         type: Sequelize.INTEGER,

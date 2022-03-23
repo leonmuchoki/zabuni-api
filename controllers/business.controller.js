@@ -5,11 +5,14 @@ exports.createBusiness = (req, res) => {
   Business.create({
     name: req.body.name,
     registration_number: req.body.name,
+    pin_number: req.body.pin_number,
     description: req.body.description,
     location: req.body.location,
     phone: req.body.phone,
     address: req.body.address,
-    userId: req.body.userId
+    userId: req.body.userId,
+    isContractingAuthority: req.body.isContractingAuthority,
+    sectorId: req.body.sectorId
   })
     .then(business => {
       res.send({ message: "Company was registered successfully!", business });
@@ -20,7 +23,7 @@ exports.createBusiness = (req, res) => {
 };
 
 exports.findBusinessById = (req, res) => {
-    return Business.findByPk({where: {id:  req.params.id}})
+    return Business.findByPk({where: {id:  req.params.id}}, { include: ["sector", "businessDirectors"] })
       .then((business) => {
         return res.status(200).send({business});
       })
@@ -31,7 +34,7 @@ exports.findBusinessById = (req, res) => {
   };
 
   exports.findSupplierBusiness = (req, res) => {
-    return Business.findByPk({where: {userId:  req.params.userId}})
+    return Business.findByPk({where: {userId:  req.params.userId, isContractingAuthority: false}})
       .then((business) => {
         return res.status(200).send({business});
       })
