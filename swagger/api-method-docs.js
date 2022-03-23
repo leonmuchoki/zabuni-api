@@ -488,6 +488,8 @@
  *         type: string
  *       registration_number:
  *         type: string
+ *       pin_number:
+ *         type: string
  *       description:
  *         type: string
  *       location:
@@ -501,6 +503,7 @@
  *     required:
  *       - name
  *       - registration_number
+ *       - pin_number
  *   CreateBusinessDocument:
  *     type: object
  *     properties:
