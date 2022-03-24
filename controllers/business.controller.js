@@ -2,6 +2,7 @@ const db = require("../models");
 const Business = db.business;
 
 exports.createBusiness = (req, res) => {
+  //TODO: check user does not have another business
   Business.create({
     name: req.body.name,
     registration_number: req.body.name,

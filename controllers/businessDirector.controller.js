@@ -16,7 +16,7 @@ exports.createBusinessDirector = (req, res) => {
 };
 
 exports.findBusinessDirectors = (req, res) => {
-    return Document.findAll({
+    return BusinessDirector.findAll({
             where: {
                 businessId: req.params.businessId 
             }
