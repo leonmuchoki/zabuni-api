@@ -2,17 +2,22 @@ const db = require("../models");
 const TenderBid = db.tenderBid;
 
 exports.createTenderBid = (req, res) => {
-  TenderBid.create({
-    bid_amount: req.body.bid_amount,
-    tenderId: req.body.tenderId,
-    businessId: req.body.businessId
-  })
-    .then((tenderBid) => {
-        res.send({ message: "Tender Bid was created successfully!", tenderBid });
+  //Check for bidding only once per tender
+    TenderBid.findOne({where: {tenderId:  req.body.tenderId, businessId: req.body.businessId}}).then((bid) => {
+        if(!bid) {
+            return TenderBid.create({
+                bid_amount: req.body.bid_amount,
+                tenderId: req.body.tenderId,
+                businessId: req.body.businessId
+              })
+                .then((tenderBid) => {
+                    res.send({ message: "Tender Bid was created successfully!", tenderBid });
+                })
+                .catch(err => {
+                  res.status(500).send({ message: err.message });
+                });
+        }
     })
-    .catch(err => {
-      res.status(500).send({ message: err.message });
-    });
 };
 
 exports.getAllTenderBids = (req, res) => {
@@ -49,7 +54,7 @@ exports.findBidByTenderId = (req, res) => {
 };
 
 exports.findBidByBusinessId = (req, res) => {
-    return TenderBid.findOne({where: {businessId:  req.params.businessId}}, { include: ["tender", "business"] })
+    return TenderBid.findAll({where: {businessId:  req.params.businessId}}, { include: ["tender", "business"] })
       .then((tenderBid) => {
         return res.status(200).send({tenderBid});
       })
