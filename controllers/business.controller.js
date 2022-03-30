@@ -3,24 +3,33 @@ const Business = db.business;
 
 exports.createBusiness = (req, res) => {
   //TODO: check user does not have another business
-  Business.create({
-    name: req.body.name,
-    registration_number: req.body.name,
-    pin_number: req.body.pin_number,
-    description: req.body.description,
-    location: req.body.location,
-    phone: req.body.phone,
-    address: req.body.address,
-    userId: req.body.userId,
-    isContractingAuthority: req.body.isContractingAuthority,
-    sectorId: req.body.sectorId
-  })
-    .then(business => {
-      res.send({ message: "Company was registered successfully!", business });
-    })
-    .catch(err => {
-      res.status(500).send({ message: err.message });
-    });
+  Business.findOne({where: {userId:  req.body.userId}}).then((bus) => {
+    if(bus) {
+      console.log("business exists " + JSON.stringify(bus));
+      return res.status(400).send("User already has an existing business.");
+    } else {
+      Business.create({
+        name: req.body.name,
+        registration_number: req.body.name,
+        pin_number: req.body.pin_number,
+        description: req.body.description,
+        location: req.body.location,
+        phone: req.body.phone,
+        address: req.body.address,
+        userId: req.body.userId,
+        isContractingAuthority: req.body.isContractingAuthority,
+        sectorId: req.body.sectorId
+      })
+        .then(business => {
+          res.send({ message: "Company was registered successfully!", business });
+        })
+        .catch(err => {
+          res.status(500).send({ message: err.message });
+        });
+    }
+  });
+
+
 };
 
 exports.findBusinessById = (req, res) => {
