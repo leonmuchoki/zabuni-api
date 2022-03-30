@@ -12,7 +12,7 @@ module.exports = function(app) {
   
   app.post(
     "/api/tender/categories",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken],
     controller.createTenderCategory
   );
 
