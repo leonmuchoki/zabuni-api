@@ -12,7 +12,8 @@ exports.createTenderDocument = async(req, res) => {
   const result = await uploadDocumentToAzure(req.file.originalname,req.file.buffer);
   if(result.upload_status) {
     TenderDocument.create({
-      name: result.blobName,
+      name: req.file.originalname,
+      blobName: result.blobName,
       extension: req.file.mimetype,
       fileSize: req.file.size,
       tenderId: req.body.tenderId

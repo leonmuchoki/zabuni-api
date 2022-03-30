@@ -6,12 +6,16 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsondoc = require("swagger-jsdoc");
 
+require('dotenv').config();
+
 const { swaggerOptions } = require("./swagger/options")
 const { createInitialRoles } = require("./utilities/Roles");
 const { createInitialSectors } = require("./utilities/sectors");
 const { createInitialTenderTypes } = require("./utilities/tenderTypes");
 const { createInitialTenderCategories } = require("./utilities/tenderCategories");
 const { createInitialDocumentTypes } = require("./utilities/documentTypes");
+
+const containerName = "filecontainer";
 
 const app = express();
 var corsOptions = {
@@ -28,7 +32,6 @@ app.get("/hello", (req, res) => {
   res.json("Hello world!");
 });
 
-
 const specs = swaggerJsondoc(swaggerOptions);
 app.use("/docs", swaggerUi.serve);
 app.get(
@@ -38,19 +41,18 @@ app.get(
   })
 );
 
-
 const db = require("./models");
 const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
-//db.sequelize.sync({force: true}).then(() => {
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force: true}).then(() => {
+//db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   //--initial();
-  //createInitialRoles();
-  //createInitialSectors();
-  //createInitialTenderTypes();
-  //createInitialTenderCategories();
-  //createInitialDocumentTypes();
+  createInitialRoles();
+  createInitialSectors();
+  createInitialTenderTypes();
+  createInitialTenderCategories();
+  createInitialDocumentTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
@@ -74,6 +76,7 @@ require('./routes/tenderBid.routes')(app);
 require('./routes/tenderDocument.routes')(app);
 require('./routes/business.routes')(app);
 require('./routes/businessDirector.routes')(app);
+require('./routes/tenderBidDocument.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

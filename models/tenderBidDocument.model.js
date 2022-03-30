@@ -3,6 +3,9 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING
       },
+      blobName: {
+        type: DataTypes.STRING
+      },
       description: {
         type: DataTypes.STRING
       },

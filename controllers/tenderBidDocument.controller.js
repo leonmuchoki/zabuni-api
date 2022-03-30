@@ -1,14 +1,14 @@
 const db = require("../models");
-const Document = db.businessDocument;
+const Document = db.tenderBidDocument;
 
 const { uploadDocumentToAzure } = require("../utilities/uploadDocAzure")
 
-exports.createBusinessDocument = async(req, res) => {
+exports.createTenderBidDocument = async(req, res) => {
   if (!req.file) {
     return res.status(400).send("No file received.");
   }
 
-  if(!req.body.businessId) return res.status(400).send("Please add business id.");
+  if(!req.body.tenderBidId) return res.status(400).send("Please add tender bid id.");
 
   const result = await uploadDocumentToAzure(req.file.originalname,req.file.buffer);
 
@@ -19,7 +19,7 @@ exports.createBusinessDocument = async(req, res) => {
       blobName: result.blobName,
       extension: req.file.mimetype,
       fileSize: req.file.size,
-      businessId: req.body.businessId
+      tenderBidId: req.body.tenderBidId
     })
       .then((document) => {
           res.send({ message: "Document was created successfully!", document });
@@ -34,10 +34,10 @@ exports.createBusinessDocument = async(req, res) => {
 
 };
 
-exports.findBusinessDocuments = (req, res) => {
+exports.findTenderBidDocuments = (req, res) => {
     return Document.findAll({
             where: {
-                businessId: req.params.businessId 
+                tenderBidId: req.params.tenderBidId 
             }
         })
         .then((docs) => {

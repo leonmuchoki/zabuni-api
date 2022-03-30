@@ -52,6 +52,7 @@ db.documentType = require("../models/documentType.model")(sequelize, Sequelize);
 db.businessDocument = require("../models/businessDocument.model")(sequelize, Sequelize);
 db.businessDirector = require("../models/businessDirector.model")(sequelize, Sequelize);
 db.tenderBid = require("../models/tenderBid.model")(sequelize, Sequelize);
+db.tenderBidDocument = require("../models/tenderBidDocument.model")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -108,6 +109,12 @@ db.tenderBid.belongsTo(db.tender, {
 });
 
 db.tenderBid.belongsTo(db.business);
+
+db.tenderBid.hasMany(db.tenderBidDocument, { as: "tenderBidDocuments" });
+db.tenderBidDocument.belongsTo(db.tenderBid, {
+  foreignKey: "tenderBidId",
+  as: "tenderBid"
+});
 
 db.sector.hasMany(db.company, { as: "company" });
 db.company.belongsTo(db.sector, {
