@@ -15,7 +15,7 @@ module.exports = function(app) {
   
   app.post(
     "/api/business/documents",
-    [authJwt.verifyToken, authJwt.isSupplier, uploadStrategy],
+    [authJwt.verifyToken, uploadStrategy],
     controller.createBusinessDocument
   );
 
