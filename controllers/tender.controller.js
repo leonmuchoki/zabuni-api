@@ -6,6 +6,7 @@ const Op = db.Sequelize.Op;
 
 exports.createTender = (req, res) => {
     console.log("req.body" + JSON.stringify(req.body));
+  if(!req.body.name || !req.body.closing_date || !req.body.closing_time || !req.body.businessId) return res.status(400).send("Please add all required fields.");
   Tender.create({
     name: req.body.name,
     description: req.body.description,

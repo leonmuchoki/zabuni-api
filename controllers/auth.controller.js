@@ -5,6 +5,7 @@ const Role = db.role;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { sendEmail } = require("../utilities/sendEmail")
 
 exports.signup = (req, res) => {
     console.log("req.body" + JSON.stringify(req.body));
@@ -23,6 +24,8 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
+            const emailText = `Thank you for registering. Login to complete your business profile.`;
+            sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText);
             res.send({ message: "User was registered successfully!", user });
           });
         });
