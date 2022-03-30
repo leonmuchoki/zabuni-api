@@ -58,6 +58,18 @@ exports.findBusinessById = (req, res) => {
       });
   };
 
+  exports.getAllBusinesses = (req, res) => {
+    return Business.findAll({
+        include: ["sector", "businessDirectors"],
+  }).then((businesses) => {
+      return res.status(200).send({businesses});
+  })
+  .catch((err) => {
+      console.log(">> Error while loading  businesses: ", err);
+      res.status(500).send({ message: err.message });
+      });;
+  };
+
   exports.verifyBusiness = (req, res) => {
     Business.findOne({where: {id: req.params.businessId }})
         .then(bus => {

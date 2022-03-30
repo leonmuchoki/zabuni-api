@@ -16,6 +16,7 @@ module.exports = function(app) {
     controller.createBusiness
   );
 
+  app.get("/api/business", [authJwt.verifyToken, authJwt.isAdmin], controller.getAllBusinesses);
   app.get("/api/business/:userId",[authJwt.verifyToken], controller.findSupplierBusiness);
   app.get("/api/business/verify/:businessId",[authJwt.verifyToken, authJwt.isAdmin], controller.verifyBusiness);
 };
