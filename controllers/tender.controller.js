@@ -93,7 +93,7 @@ exports.findContractingAuthorityTenders = (req, res) => {
 
 exports.getAllTenders = (req, res) => {
     return Tender.findAll({
-        include: ["sector", "tenderCategory","company"],
+        include: ["sector", "tenderCategory","business"],
 }).then((tenders) => {
     return res.status(200).send({tenders});
 })

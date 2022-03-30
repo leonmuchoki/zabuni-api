@@ -1,6 +1,10 @@
 const controller = require("../controllers/tenderDocument.controller");
 const { authJwt } = require("../middleware");
 
+const multer = require("multer");
+const inMemoryStorage = multer.memoryStorage()
+const uploadStrategy = multer({ storage: inMemoryStorage }).single('file');
+
 module.exports = function(app) {
   app.use(function(req, res, next) {
     res.header(
@@ -12,7 +16,7 @@ module.exports = function(app) {
   
   app.post(
     "/api/tender/documents",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin, uploadStrategy],
     controller.createTenderDocument
   );
 
