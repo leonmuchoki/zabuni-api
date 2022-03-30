@@ -79,8 +79,8 @@ db.business.belongsTo(db.sector, {
 
 db.business.hasMany(db.tender, { as: "tenders" });
 db.tender.belongsTo(db.business, {
-  foreignKey: "companyId",
-  as: "company"
+  foreignKey: "businessId",
+  as: "business"
 });
 
 db.tenderType.hasMany(db.tender, { as: "tenders" });
