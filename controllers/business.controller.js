@@ -1,5 +1,6 @@
 const db = require("../models");
 const Business = db.business;
+const User = db.user;
 const { sendEmail } = require("../utilities/sendEmail")
 
 exports.createBusiness = (req, res) => {
@@ -22,9 +23,14 @@ exports.createBusiness = (req, res) => {
         sectorId: req.body.sectorId
       })
         .then(business => {
-          const emailText = `Business ${req.body.name} has been registered successfully. The Zabuni team will verify your details. Thank you`;
-          const emailTextHTML = `Business <strong>${req.body.name}</strong> has been registered successfully! <br /> <p>The Zabuni team will verify your details.</p> <br/> <p>Thank you</p>`;
-          sendEmail(req.body.email, "muchokileon@gmail.com", "BUSINESS REGISTRATION", emailText, emailTextHTML);
+          try {
+            User.findByPk(req.userId).then((user) => {
+              const emailText = `Business ${req.body.name} has been registered successfully. The Zabuni team will verify your details. Thank you`;
+              const emailTextHTML = `<p>Hello,</p><br/> <p>Business <strong>${req.body.name}</strong> has been registered successfully!</p> <br /> <p>The Zabuni team will verify your business details.</p> <br/> <p>Thank you</p>`;
+              sendEmail(user.email, "muchokileon@gmail.com", "BUSINESS REGISTRATION", emailText, emailTextHTML);
+            })
+          }
+          catch(ex) {}
           res.send({ message: "Company was registered successfully!", business });
         })
         .catch(err => {
@@ -80,17 +86,20 @@ exports.findBusinessById = (req, res) => {
         let values = { verified : true};
         return bus.update(values).then( updatedRecord => {
             console.log(`updated record ${JSON.stringify(updatedRecord,null,2)}`);
-
-            const emailText = `Congratulations. Your business details have been verified.`;
-            const emailTextHTML = `Business verified! <br /> <p>Business details:</p> 
-            <ul>
-              <ol>Business name: ${bus.name}</ol>
-              <ol>Registration number: ${bus.registration_number}</ol>
-              <ol>KRA PIN Number: ${bus.pin_number}</ol>
-            </ul>
-            <br/> <p>Thank you</p>`;
-            sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText, emailTextHTML);
-
+            try {
+              User.findByPk(req.userId).then((user) => {
+                const emailText = `Congratulations. Your business details have been verified.`;
+                const emailTextHTML = `<p>Hello,</p><br/>Your business has been <strong><span style="green">verified</span>!</strong> <br /> <p>Business details:</p> 
+                <ul>
+                  <ol>Business name: <em>${bus.name}</em></ol>
+                  <ol>Registration number:<em>${bus.registration_number}</em></ol>
+                  <ol>KRA PIN Number: <em>${bus.pin_number}</em></ol>
+                </ul>
+                <br/> <p>Thank you</p>`;
+                sendEmail(user.email, "muchokileon@gmail.com", "BUSINESS VERIFIED", emailText, emailTextHTML);
+              })
+            }
+            catch(ex) {}
             return res.send({ message: "Company was verified successfully!", bussiness: updatedRecord });
         }).catch((err) => {
             console.log(">> Error while verifying company: ", err);

@@ -16,7 +16,7 @@ module.exports = function(app) {
   
   app.post(
     "/api/tender/bid/documents",
-    [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin, uploadStrategy],
+    [authJwt.verifyToken, authJwt.isSupplier, uploadStrategy],
     controller.createTenderBidDocument
   );
 

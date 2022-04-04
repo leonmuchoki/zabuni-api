@@ -1,5 +1,7 @@
 const db = require("../models");
 const TenderBid = db.tenderBid;
+const User = db.user;
+const { sendEmail } = require("../utilities/sendEmail")
 
 exports.createTenderBid = (req, res) => {
   //TODO: Check for bidding only once per tender
@@ -13,6 +15,14 @@ exports.createTenderBid = (req, res) => {
                 businessId: req.body.businessId
           })
             .then((tenderBid) => {
+                try {
+                    User.findByPk(req.userId).then((user) => {
+                        const emailText = `Tender bid has been created successfully. Thank you`;
+                        const emailTextHTML = `Hello,<br/> <p>Tender bid number:<strong> ${tenderBid.id} </strong>, has been created successfully!</p> <br/> <p>Thank you</p>`;
+                        sendEmail(user.email, "muchokileon@gmail.com", "BUSINESS BID", emailText, emailTextHTML);
+                    })
+                }
+                catch(ex) {}
                 res.send({ message: "Tender Bid was created successfully!", tenderBid });
             })
             .catch(err => {
