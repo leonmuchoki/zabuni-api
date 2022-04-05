@@ -12,14 +12,14 @@ exports.createBusiness = (req, res) => {
     } else {
       Business.create({
         name: req.body.name,
-        registration_number: req.body.name,
+        registration_number: req.body.registration_number,
         pin_number: req.body.pin_number,
         description: req.body.description,
         location: req.body.location,
         phone: req.body.phone,
         address: req.body.address,
         userId: req.body.userId,
-        isContractingAuthority: req.body.isContractingAuthority,
+        isContractingAuthority: req.body.hasOwnProperty('isContractingAuthority') ? req.body.isContractingAuthority : false,
         sectorId: req.body.sectorId
       })
         .then(business => {
@@ -38,8 +38,48 @@ exports.createBusiness = (req, res) => {
         });
     }
   });
+};
 
-
+exports.updateBusiness = (req, res) => {
+  //TODO: check user does not have another business
+  Business.findByPk(req.params.id).then((bus) => {
+    if(bus) {
+      let updatedValues = {
+        name: req.body.hasOwnProperty('name') ? req.body.name : bus.name,
+        registration_number: req.body.hasOwnProperty('registration_number') ? req.body.registration_number : bus.registration_number,
+        pin_number: req.body.hasOwnProperty('pin_number') ? req.body.pin_number : bus.pin_number,
+        description: req.body.hasOwnProperty('description') ? req.body.description : bus.description,
+        location: req.body.hasOwnProperty('location') ?  req.body.location : bus.location,
+        phone: req.body.hasOwnProperty('phone') ?  req.body.phone : bus.phone,
+        address: req.body.hasOwnProperty('address') ?  req.body.address : bus.address,
+        userId: req.body.hasOwnProperty('userId') ?  req.body.userId : bus.userId,
+        isContractingAuthority: req.body.hasOwnProperty('isContractingAuthority') ?  req.body.isContractingAuthority : bus.isContractingAuthority,
+        sectorId: req.body.hasOwnProperty('sectorId') ?  req.body.sectorId : bus.sectorId
+      }
+      return bus.update(updatedValues).then((updatedRecord) => {
+        try {
+          User.findByPk(req.userId).then((user) => {
+            const emailText = `Hello. Your business details have been udpated.`;
+            const emailTextHTML = `<p>Hello,</p><br/>Your business details have been <strong><span style="green">updated</span>!</strong> <br /> <p>Business details:</p> 
+            <ul>
+              <ol>Business name: <em>${updatedRecord.name}</em></ol>
+              <ol>Registration number:<em>${updatedRecord.registration_number}</em></ol>
+              <ol>KRA PIN Number: <em>${updatedRecord.pin_number}</em></ol>
+              <ol>location: <em>${updatedRecord.location}</em></ol>
+              <ol>phone: <em>${updatedRecord.phone}</em></ol>
+              <ol>address: <em>${updatedRecord.address}</em></ol>
+            </ul>
+            <br/> <p>Thank you</p>`;
+            sendEmail(user.email, "muchokileon@gmail.com", "BUSINESS VERIFIED", emailText, emailTextHTML);
+          })
+        }
+        catch(ex) {}
+        return res.status(200).send({ message: "Business Details  updated successfully!", bussiness: updatedRecord });
+      })
+    } else {
+      return  res.status(400).send({ message: "business not found" });
+    }
+  }).catch((err) => res.status(500).send({ message: err.message }));
 };
 
 exports.findBusinessById = (req, res) => {
