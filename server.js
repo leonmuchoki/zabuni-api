@@ -76,6 +76,7 @@ require('./routes/tenderBid.routes')(app);
 require('./routes/tenderDocument.routes')(app);
 require('./routes/business.routes')(app);
 require('./routes/businessDirector.routes')(app);
+require('./routes/businessDocument.routes')(app);
 require('./routes/tenderBidDocument.routes')(app);
 
 // set port, listen for requests
