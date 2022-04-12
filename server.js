@@ -79,6 +79,7 @@ require('./routes/businessDirector.routes')(app);
 require('./routes/businessDocument.routes')(app);
 require('./routes/tenderBidDocument.routes')(app);
 require('./routes/issue.routes')(app);
+require('./routes/adminDashBoard.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
