@@ -1,6 +1,8 @@
 const db = require("../models");
 const Business = db.business;
 const User = db.user;
+const Role = db.role;
+const Op = db.Sequelize.Op;
 const { sendEmail } = require("../utilities/sendEmail");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -69,11 +71,11 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
           }
         }
       }).then(async(roles) => {
-        await user.setRoles(roles);
+        user.setRoles(roles);
       });
     } else {
       // user role = 1
-      await user.setRoles([1]);
+      user.setRoles([1]);
     }
   })
   .catch(err => {
