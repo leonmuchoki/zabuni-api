@@ -77,6 +77,7 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
       // user role = 1
       user.setRoles([1]);
     }
+    return user;
   })
   .catch(err => {
     res.status(500).send({ message: err.message });
