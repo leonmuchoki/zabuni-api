@@ -1,7 +1,9 @@
 const db = require("../models");
 const Business = db.business;
 const User = db.user;
-const { sendEmail } = require("../utilities/sendEmail")
+const { sendEmail } = require("../utilities/sendEmail");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 exports.createBusiness = (req, res) => {
   //TODO: check user does not have another business
@@ -38,6 +40,47 @@ exports.createBusiness = (req, res) => {
         });
     }
   });
+};
+
+exports.createContractingAuthorityBusiness = (req, res) => {
+  /*
+  -creating by admin
+  -auto create account
+  -auto create password
+  -send email with login details
+  */
+  const randomPassword = Math.random().toString(36).slice(-8);
+  User.create({
+    email: req.body.email,
+    password: bcrypt.hashSync(randomPassword, 8)
+  })
+  .then((user) => {
+    Business.create({
+      name: req.body.name,
+      description: req.body.description,
+      location: req.body.location,
+      phone: req.body.phone,
+      address: req.body.address,
+      userId: user.id,
+      isContractingAuthority: req.body.hasOwnProperty('isContractingAuthority') ? req.body.isContractingAuthority : true,
+      sectorId: req.body.sectorId
+    })
+      .then(business => {
+        try {
+          User.findByPk(req.userId).then((user) => {
+            const emailText = `Business ${req.body.name} has been registered successfully. Thank you`;
+            const emailTextHTML = `<p>Hello,</p><br/> <p>Organization <strong>${req.body.name}</strong> has been registered in Zabuni successfully!</p> <br /> <p>Organization login details:</p> <p>Organization Email: <em>${user.email}</em></p><p>Password: <em>${randomPassword}</em></p> <br/> <p>Thank you</p>`;
+            sendEmail(user.email, "muchokileon@gmail.com", "Contracting Authority REGISTRATION", emailText, emailTextHTML);
+          });
+        }
+        catch(ex) {}
+        res.send({ message: "Company was registered successfully!", business });
+      })
+      .catch(err => {
+        res.status(500).send({ message: err.message });
+      });
+  })
+  .catch((err) => res.status(400).send({message: "error creating user account " + err.message}));
 };
 
 exports.updateBusiness = (req, res) => {

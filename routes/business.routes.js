@@ -15,6 +15,11 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.createBusiness
   );
+  app.post(
+    "/api/business/ca",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.createContractingAuthorityBusiness
+  );
 
   app.put("/api/business/:id", [authJwt.verifyToken], controller.updateBusiness);
   app.get("/api/business", [authJwt.verifyToken, authJwt.isAdmin], controller.getAllBusinesses);
