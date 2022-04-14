@@ -68,7 +68,8 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
     console.log("user.....<<< " + JSON.stringify(user));
     Business.create({
       name: req.body.name,
-      registration_number: req.body.name,
+      registration_number: req.body.name,//TODO
+      pin_number: req.body.name,//TODO
       description: req.body.description,
       location: req.body.location,
       phone: req.body.phone,
