@@ -60,7 +60,7 @@ exports.findUserById = (req, res) => {
 };
 
 exports.findBusinessUsers = (req, res) => {
-  return User.findOne({where: {companyId:  req.params.businessId}})
+  return User.findAll({where: {companyId:  req.params.businessId}})
     .then((users) => {
       return res.status(200).send({users});
     })
