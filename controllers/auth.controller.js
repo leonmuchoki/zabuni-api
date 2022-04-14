@@ -8,8 +8,6 @@ var bcrypt = require("bcryptjs");
 const { sendEmail } = require("../utilities/sendEmail")
 
 exports.signup = (req, res) => {
-    console.log("req.body" + JSON.stringify(req.body));
-  // Save User to Database
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
@@ -25,7 +23,8 @@ exports.signup = (req, res) => {
         }).then(roles => {
           user.setRoles(roles).then(() => {
             const emailText = `Thank you for registering. Login to complete your business profile.`;
-            sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText);
+            const emailTextHTML = `<p>Hello,</p><br/> <p>Account created.</p> <br /> <p>Email: <em>${user.email}</em></p> <br/> <p>Password: <strong>********</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
+            sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText, emailTextHTML);
             res.send({ message: "User was registered successfully!", user });
           });
         });

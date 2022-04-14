@@ -8,6 +8,9 @@ module.exports = function(app) {
     );
     next();
   });
+
+  app.post("/api/user", [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin], controller.addUser);
+  
   app.get("/api/test/all", controller.allAccess);
   app.get(
     "/api/test/user",
