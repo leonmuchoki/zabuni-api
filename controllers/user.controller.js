@@ -8,11 +8,16 @@ const { sendEmail } = require("../utilities/sendEmail")
 admin can use this endpoint to add staff for contracting authority 
 just need to pass role as contracting authority
 */
-exports.addUser = () => {
-  
+exports.addUser = async() => {
+  const userData = await User.findOne({where: {email: req.body.email}});
+  if (userData) {
+    res.status(400).send({message: "User already exists"});
+    return;
+  }
+  const randomPassword = Math.random().toString(36).slice(-8);
   User.create({
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
+    password: bcrypt.hashSync(randomPassword, 8),
     companyId: req.body.companyId //contracting authority business id
   })
     .then(user => {
@@ -26,7 +31,7 @@ exports.addUser = () => {
         }).then(roles => {
           user.setRoles(roles).then(() => {
             const emailText = `Hello. Your account has been created. Email: ${user.email} Password: ${req.body.password}`;
-            const emailTextHTML = `<p>Hello,</p><br/> <p>Account created.</p> <br /> <p>Email: <em>${user.email}</em></p> <br/> <p>Password: <strong>${req.body.password}</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
+            const emailTextHTML = `<p>Hello,</p><br/> <p>Account created.</p> <br /> <p>Email: <em>${user.email}</em></p> <br/> <p>Password: <strong>${randomPassword}</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
             sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText,emailTextHTML);
             res.send({ message: "User was registered successfully!", user });
           });

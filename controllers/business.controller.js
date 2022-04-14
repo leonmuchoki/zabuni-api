@@ -80,13 +80,16 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
     })
       .then(business => {
         try {
+          console.log("req.userid " + req.userId);
           User.findByPk(req.userId).then((user) => {
             const emailText = `Business ${req.body.name} has been registered successfully. Thank you`;
-            const emailTextHTML = `<p>Hello,</p><br/> <p>Organization <strong>${req.body.name}</strong> has been registered in Zabuni successfully!</p> <br /> <p>Organization login details:</p> <p>Organization Email: <em>${user.email}</em></p><p>Password: <em>${randomPassword}</em></p> <br/> <p>Thank you</p>`;
-            sendEmail(user.email, "muchokileon@gmail.com", "Contracting Authority REGISTRATION", emailText, emailTextHTML);
+            const emailTextHTML = `<p>Hello,</p><br/> <p>Organization <strong>${req.body.name}</strong> has been registered in Zabuni successfully!</p> <br /> <p>Organization login details:</p> <p>Organization Email: <em>${req.body.email}</em></p><p>Password: <em>${randomPassword}</em></p> <br/> <p>Thank you</p>`;
+            sendEmail(req.body.email, "muchokileon@gmail.com", "Contracting Authority REGISTRATION", emailText, emailTextHTML);
           });
         }
-        catch(ex) {}
+        catch(ex) {
+          console.error(ex);
+        }
         res.send({ message: "Company was registered successfully!", business });
       })
       .catch(err => {
