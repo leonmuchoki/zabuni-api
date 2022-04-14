@@ -70,7 +70,7 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
             [Op.or]: req.body.roles
           }
         }
-      }).then(async(roles) => {
+      }).then((roles) => {
         user.setRoles(roles);
       });
     } else {
