@@ -10,7 +10,7 @@ module.exports = function(app) {
   });
 
   app.post("/api/user", [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin], controller.addUser);
-  app.get("/api/business/users",[authJwt.verifyToken], controller.findBusinessUsers);
+  app.get("/api/users/:businessId",[authJwt.verifyToken], controller.findBusinessUsers);
 
   app.get("/api/test/all", controller.allAccess);
   app.get(
