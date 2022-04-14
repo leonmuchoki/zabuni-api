@@ -8,7 +8,7 @@ const { sendEmail } = require("../utilities/sendEmail")
 admin can use this endpoint to add staff for contracting authority 
 just need to pass role as contracting authority
 */
-exports.addUser = async() => {
+exports.addUser = async(req, res) => {
   const userData = await User.findOne({where: {email: req.body.email}});
   if (userData) {
     res.status(400).send({message: "User already exists"});
