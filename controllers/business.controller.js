@@ -42,21 +42,33 @@ exports.createBusiness = (req, res) => {
   });
 };
 
-exports.createContractingAuthorityBusiness = (req, res) => {
+exports.createContractingAuthorityBusiness = async(req, res) => {
   /*
   -creating by admin
   -auto create account
   -auto create password
   -send email with login details
   */
+  const userData = await User.findOne({where: {email:  req.body.email}});
+  if(userData) {
+    console.log("userData  " + JSON.stringify(userData));
+    res.status(400).send({ message: "Organization email already registered to another business/organization" });
+    return;
+  }
   const randomPassword = Math.random().toString(36).slice(-8);
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(randomPassword, 8)
   })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+    return;
+  })
   .then((user) => {
+    console.log("user.....<<< " + JSON.stringify(user));
     Business.create({
       name: req.body.name,
+      registration_number: req.body.name,
       description: req.body.description,
       location: req.body.location,
       phone: req.body.phone,
