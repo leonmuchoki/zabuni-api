@@ -9,6 +9,7 @@ admin can use this endpoint to add staff for contracting authority
 just need to pass role as contracting authority
 */
 exports.addUser = () => {
+  
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
@@ -43,7 +44,7 @@ exports.addUser = () => {
 };
 
 exports.findUserById = (req, res) => {
-  return User.findOne(req.params.userId, {include: ["business"]})
+  return User.findOne({where: {id:  req.params.userId}}, {include: ["business"]})
     .then((user) => {
       return res.status(200).send({user});
     })

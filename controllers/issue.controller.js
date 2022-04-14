@@ -1,12 +1,13 @@
 const db = require("../models");
 const Issue = db.issue;
 const User = db.user;
+const Business = db.business;
 const { sendEmail } = require("../utilities/sendEmail")
 
 exports.createIssue = (req, res) => {
     Issue.create({
         description: req.body.description,
-        userId: req.body.userId
+        userId: req.userId // person reporting issue
       })
         .then(issue => {
           try {
@@ -26,7 +27,9 @@ exports.createIssue = (req, res) => {
 
 exports.findIssueById = (req, res) => {
     return Issue.findOne({where: {id:  req.params.id}}, { include: ["user"] })
-      .then((issue) => {
+      .then(async(issue) => {
+        //get user business
+        //const userBusiness = Business
         return res.status(200).send({issue});
       })
       .catch((err) => {
