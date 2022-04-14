@@ -60,6 +60,22 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
     email: req.body.email,
     password: bcrypt.hashSync(randomPassword, 8)
   })
+  .then(user => {
+    if (req.body.roles) {
+      Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        }
+      }).then(async(roles) => {
+        await user.setRoles(roles);
+      });
+    } else {
+      // user role = 1
+      await user.setRoles([1]);
+    }
+  })
   .catch(err => {
     res.status(500).send({ message: err.message });
     return;
