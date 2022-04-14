@@ -54,10 +54,26 @@ exports.findUserById = (req, res) => {
       return res.status(200).send({user});
     })
     .catch((err) => {
-      console.log(">> Error while finding comment: ", err);
+      console.log(">> Error while finding user: ", err);
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.findBusinessUsers = (req, res) => {
+  return User.findOne({where: {companyId:  req.params.businessId}})
+    .then((users) => {
+      return res.status(200).send({users});
+    })
+    .catch((err) => {
+      console.log(">> Error while getting business users ", err);
+      res.status(500).send({ message: err.message });
+    });
+};
+
+/*
+TODO:
+Get contracting authority staff
+*/
 
 
 
