@@ -172,7 +172,7 @@ exports.findBusinessById = (req, res) => {
   };
 
   exports.findSupplierBusiness = (req, res) => {
-    return Business.findOne({where: {userId:  req.params.userId, isContractingAuthority: false}})
+    return Business.findOne({where: {userId:  req.params.userId}})
       .then((business) => {
         return res.status(200).send({business});
       })
