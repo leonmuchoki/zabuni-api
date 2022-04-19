@@ -81,7 +81,7 @@ exports.findSectorTenders = (req, res) => {
 };
 
 exports.findContractingAuthorityTenders = (req, res) => {
-  return Tender.findAll({where: {businessId:  req.params.businessId},  include: ["sector", "tenderCategory","business", "tenderDocuments"] })
+  return Tender.findAll({where: {businessId:  req.params.businessId},  include: ["sector", "tenderCategory","business", "tenderDocuments","tenderBids"] })
     .then((tender) => {
       //return tender;
       return res.status(200).send({tender});
