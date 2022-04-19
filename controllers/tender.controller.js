@@ -45,7 +45,7 @@ exports.findTenderByName = (req, res) => {
 };
 
 exports.findTenderById = (req, res) => {
-    return Tender.findByPk({where: {id:  req.params.id}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+    return Tender.findByPk(req.params.id, { include: ["sector", "tenderCategory","tenderType","business"] })
       .then((tender) => {
         //return tender;
         return res.status(200).send({tender});
@@ -57,7 +57,7 @@ exports.findTenderById = (req, res) => {
 };
 
 exports.findCategoryTenders = (req, res) => {
-  return Tender.findOne({where: {tenderCategoryId:  req.params.tenderCategoryId}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+  return Tender.findAll({where: {tenderCategoryId:  req.params.tenderCategoryId}, include: ["sector", "tenderCategory","tenderType","business"] })
     .then((tender) => {
       //return tender;
       return res.status(200).send({tender});
@@ -69,7 +69,7 @@ exports.findCategoryTenders = (req, res) => {
 };
 
 exports.findSectorTenders = (req, res) => {
-  return Tender.findAll({where: {sectorId:  req.params.sectorId}}, { include: ["sector", "tenderCategory","tenderType","business"] })
+  return Tender.findAll({where: {sectorId:  req.params.sectorId}, include: ["sector", "tenderCategory","tenderType","business"] })
     .then((tender) => {
       //return tender;
       return res.status(200).send({tender});
@@ -81,7 +81,7 @@ exports.findSectorTenders = (req, res) => {
 };
 
 exports.findContractingAuthorityTenders = (req, res) => {
-  return Tender.findAll({where: {businessId:  req.params.businessId}}, { include: [{model: Sector, as: "sector"}, "tenderCategory","tenderType","business"] })
+  return Tender.findAll({where: {businessId:  req.params.businessId},  include: ["sector", "tenderCategory","business"] })
     .then((tender) => {
       //return tender;
       return res.status(200).send({tender});

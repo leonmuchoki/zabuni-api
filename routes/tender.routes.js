@@ -16,6 +16,11 @@ module.exports = function (app) {
     controller.createTender
   );
 
+  /*
+  TODO:
+  add authorization for fetching data below
+  */
+  app.get("/api/tender/:id", controller.findTenderById);
   app.get("/api/tenders", controller.getAllTenders);
   app.get(
     "/api/category/tenders/:tenderCategoryId",
