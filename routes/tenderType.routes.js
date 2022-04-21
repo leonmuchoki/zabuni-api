@@ -16,5 +16,5 @@ module.exports = function(app) {
     controller.createTenderType
   );
 
-  app.get("/api/tender/types", controller.getAllTenderTypes);
+  app.get("/api/tender_types", controller.getAllTenderTypes);
 };

@@ -16,5 +16,5 @@ module.exports = function(app) {
     controller.createTenderCategory
   );
 
-  app.get("/api/tender/categories", controller.getAllTenderCategories);
+  app.get("/api/tender_categories", controller.getAllTenderCategories);
 };
