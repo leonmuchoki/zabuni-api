@@ -1,7 +1,7 @@
 const db = require("../models");
 const TenderDocument = db.tenderDocument;
 
-const { uploadDocumentToAzure } = require("../utilities/uploadDocAzure")
+const { uploadDocumentToAzure, getBlobSasUrl } = require("../utilities/uploadDocAzure")
 
 exports.createTenderDocument = async(req, res) => {
   if (!req.file) {
@@ -35,4 +35,20 @@ exports.getAllTenderDocuments = (req, res) => {
     console.log(">> Error while loading  tender categories: ", err);
     res.status(500).send({ message: err.message });
     });;
+};
+
+exports.getTenderDocumentUrl = (req, res) => {
+  return TenderDocument.findOne({where: {tenderId: req.params.tenderId}}).then((tenderDoc) => {
+    if(tenderDoc) {
+      const blobUrl = getBlobSasUrl(tenderDoc.blobName);
+      console.log("blobUrl " + blobUrl);
+      return res.status(200).send({blobUrl: blobUrl, tenderDoc});
+    } else {
+      return res.status(400).send({message: "document not found"});
+    }
+})
+.catch((err) => {
+  console.log(">> Error while getting document ", err);
+  res.status(400).send({ message: err.message });
+  });
 };

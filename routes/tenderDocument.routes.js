@@ -21,4 +21,5 @@ module.exports = function(app) {
   );
 
   app.get("/api/tender/documents", controller.getAllTenderDocuments);
+  app.get("/api/tender/document/:tenderId", controller.getTenderDocumentUrl);
 };
