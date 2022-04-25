@@ -142,6 +142,9 @@ exports.signin = (req, res) => {
           id: user.id,
           businessname: user.businessname,
           email: user.email,
+          username: user.username,
+          isAdmin: user.isAdmin,
+          companyId: user.companyId,
           roles: authorities,
           accessToken: token
         });
