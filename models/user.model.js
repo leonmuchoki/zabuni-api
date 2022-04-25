@@ -1,20 +1,15 @@
 //TODO: VERIFY SUPPLIER...KRA PIN
 /*
--Manually verify supplier by admin
--later to automate
--notify supplier of verification
+-user model used by both suppliers and contracting authories plus zabuni admin
+-for contracting authorities, they have admin(isAdmin) and other staff.
+-
 
--user model -> holds info for both supplier and CA. 
-   -business name
-   -email
-   -password
-   -verified: 
-+company:
--admins manually
--admin verify manually
 */
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("users", {
+      username: {
+        type: Sequelize.STRING
+      },
       email: {
         type: Sequelize.STRING
       },
@@ -30,7 +25,11 @@ module.exports = (sequelize, Sequelize) => {
       companyId: {
         type: Sequelize.INTEGER,
         defaultValue: 0
-      }
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
     });
     return User;
   };
