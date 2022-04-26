@@ -44,15 +44,15 @@ app.get(
 const db = require("./models");
 const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
-db.sequelize.sync({force: true}).then(() => {
-//db.sequelize.sync().then(() => {
+//db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   //--initial();
-  createInitialRoles();
+  /*createInitialRoles();
   createInitialSectors();
   createInitialTenderTypes();
   createInitialTenderCategories();
-  createInitialDocumentTypes();
+  createInitialDocumentTypes();*/
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
