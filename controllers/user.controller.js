@@ -122,6 +122,31 @@ exports.deleteUser = async(req, res) => {
   }
 };
 
+exports.activateUser = async(req, res) => {
+  try {
+    const userData = await User.findOne({where: {id:  req.params.userId}});
+    if(userData) {
+      const userUpdated = await User.update(
+        { deleted: false},
+        { where: { id: req.params.userId } }
+      );
+      if(userUpdated) {
+        const emailText = `Hello. Your account password has been reactivated.`;
+        const emailTextHTML = `<p>Hello,</p><br/> <p>Your Account has been reactivated successfully.</p> <br /> <br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
+        sendEmail(userData.email, "muchokileon@gmail.com", "ACCOUNT REACTIVATED", emailText,emailTextHTML);
+
+        res.send({ message: "User activated successfully!", userData });
+      } else {
+        res.status(400).send({ message: "Unable to delete user", userData });
+      }
+    } else {
+      res.status(400).send({ message: "User not found", userData });
+    }
+  } catch(err) {
+    res.status(400).send({ message: err });
+  }
+};
+
 exports.setLastLogin = async(req, res) => {
   try {
     const userData = await User.findOne({where: {id:  req.params.userId}});
