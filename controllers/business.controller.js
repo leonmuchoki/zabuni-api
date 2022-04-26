@@ -60,7 +60,8 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
   const randomPassword = Math.random().toString(36).slice(-8);
   User.create({
     email: req.body.email,
-    password: bcrypt.hashSync(randomPassword, 8)
+    password: bcrypt.hashSync(randomPassword, 8),
+    isAdmin: true
   })
   .then(user => {
     if (req.body.roles) {
@@ -97,9 +98,11 @@ exports.createContractingAuthorityBusiness = async(req, res) => {
       isContractingAuthority: req.body.hasOwnProperty('isContractingAuthority') ? req.body.isContractingAuthority : true,
       sectorId: req.body.sectorId
     })
-      .then(business => {
+      .then(async(business) => {
         try {
           console.log("req.userid " + req.userId);
+          //update created companyid in users
+          await user.update({companyId: business.id});
           User.findByPk(req.userId).then((user) => {
             const emailText = `Business ${req.body.name} has been registered successfully. Thank you`;
             const emailTextHTML = `<p>Hello,</p><br/> <p>Organization <strong>${req.body.name}</strong> has been registered in Zabuni successfully!</p> <br /> <p>Organization login details:</p> <p>Organization Email: <em>${req.body.email}</em></p><p>Password: <em>${randomPassword}</em></p> <br/> <p>Thank you</p>`;

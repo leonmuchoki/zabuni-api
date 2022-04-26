@@ -19,7 +19,7 @@ exports.addUser = async(req, res) => {
     email: req.body.email,
     password: bcrypt.hashSync(randomPassword, 8),
     companyId: req.body.companyId, //contracting authority business id
-    isAdmin: req.body.isAdmin || false,
+    isAdmin: req.body.hasOwnProperty('isAdmin') ? req.body.isAdmin : false,
   })
     .then(user => {
       if (req.body.roles) {
