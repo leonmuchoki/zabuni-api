@@ -90,7 +90,7 @@ exports.resetUserPassword = async(req, res) => {
       if(userUpdated) {
         const emailText = `Hello. Your account password has been reset. Email: ${userData.email} Password: ${randomPassword}`;
         const emailTextHTML = `<p>Hello,</p><br/> <p>Your Account Password has been reset successfully.</p> <br /> <p>Email: <em>${userData.email}</em></p> <br/> <p>New Password: <strong>${randomPassword}</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
-        sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT PASSWORD RESET", emailText,emailTextHTML);
+        sendEmail(userData.email, "muchokileon@gmail.com", "ACCOUNT PASSWORD RESET", emailText,emailTextHTML);
         res.send({ message: "User Password reset successfully!", userData });
       }
     } else {
