@@ -73,6 +73,50 @@ exports.findBusinessUsers = (req, res) => {
     });
 };
 
+exports.resetUserPassword = async(req, res) => {
+  try {
+    const userData = await User.findOne({where: {id:  req.params.userId}});
+    if(userData) {
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const userUpdated = await User.update(
+        { password: bcrypt.hashSync(randomPassword, 8) },
+        { where: { id: req.params.userId } }
+      );
+      if(userUpdated) {
+        const emailText = `Hello. Your account password has been reset. Email: ${userData.email} Password: ${randomPassword}`;
+        const emailTextHTML = `<p>Hello,</p><br/> <p>Your Account Password has been reset successfully.</p> <br /> <p>Email: <em>${userData.email}</em></p> <br/> <p>New Password: <strong>${randomPassword}</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
+        sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT PASSWORD RESET", emailText,emailTextHTML);
+        res.send({ message: "User Password reset successfully!", userData });
+      }
+    } else {
+      res.status(400).send({ message: "User not found", userData });
+    }
+  } catch(err) {
+    res.status(400).send({ message: err });
+  }
+};
+
+exports.deleteUser = async(req, res) => {
+  try {
+    const userData = await User.findOne({where: {id:  req.params.userId}});
+    if(userData) {
+      const userUpdated = await User.update(
+        { deleted: true},
+        { where: { id: req.params.userId } }
+      );
+      if(userUpdated) {
+        res.send({ message: "User deactivated successfully!", userData });
+      } else {
+        res.status(400).send({ message: "Unable to delete user", userData });
+      }
+    } else {
+      res.status(400).send({ message: "User not found", userData });
+    }
+  } catch(err) {
+    res.status(400).send({ message: err });
+  }
+};
+
 /*
 TODO:
 Get contracting authority staff

@@ -21,6 +21,7 @@ verifyToken = (req, res, next) => {
 };
 
 isAdmin = (req, res, next) => {
+  console.log("is ca or admin " + req.userId)
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
@@ -102,10 +103,32 @@ isBusiness = (req, res, next) => {
     });
   };
 isContractingAuthorityOrAdmin = (req, res, next) => {
+  console.log("is ca or admin " + req.userId)
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "contracting authority") {
+          next();
+          return;
+        }
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+      res.status(403).send({
+        message: "Require Contracting Authority or Admin Role!"
+      });
+    });
+  });
+};
+
+isContractingAuthorityAdminOrSysAdmin = (req, res, next) => {
+  console.log("is ca or admin " + req.userId)
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "contracting authority" && user.isAdmin) {
           next();
           return;
         }
@@ -145,6 +168,7 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin,
   isContractingAuthorityOrAdmin,
+  isContractingAuthorityAdminOrSysAdmin,
   isBusiness,
   isSupplier,
   isStaffOrAdmin,
