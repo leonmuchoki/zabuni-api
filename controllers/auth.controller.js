@@ -146,7 +146,9 @@ exports.signin = (req, res) => {
           isAdmin: user.isAdmin,
           companyId: user.companyId,
           roles: authorities,
-          accessToken: token
+          accessToken: token,
+          deleted: user.deleted,
+          lastLogin: user.lastLogin
         });
       });
     })
