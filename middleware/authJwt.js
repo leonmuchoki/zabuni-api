@@ -128,7 +128,7 @@ isContractingAuthorityAdminOrSysAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "contracting authority" && user.isAdmin) {
+        if (roles[i].name === "contracting authority" && user.isAdmin == true) {
           next();
           return;
         }

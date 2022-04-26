@@ -42,6 +42,9 @@ exports.addUser = async(req, res) => {
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
+          const emailText = `Hello. Your account has been created. Email: ${user.email} Password: ${req.body.password}`;
+          const emailTextHTML = `<p>Hello,</p><br/> <p>Account created.</p> <br /> <p>Email: <em>${user.email}</em></p> <br/> <p>Password: <strong>${randomPassword}</strong></p><br/><p>Thank You.</p><br/><br/><p><em>Please do not share password with anyone. In case of any queries contact Zabuni team.</em></p>`;
+          sendEmail(req.body.email, "muchokileon@gmail.com", "ACCOUNT CREATED", emailText,emailTextHTML);
           res.send({ message: "User was registered successfully!", user });
         });
       }
@@ -108,6 +111,27 @@ exports.deleteUser = async(req, res) => {
         res.send({ message: "User deactivated successfully!", userData });
       } else {
         res.status(400).send({ message: "Unable to delete user", userData });
+      }
+    } else {
+      res.status(400).send({ message: "User not found", userData });
+    }
+  } catch(err) {
+    res.status(400).send({ message: err });
+  }
+};
+
+exports.setLastLogin = async(req, res) => {
+  try {
+    const userData = await User.findOne({where: {id:  req.params.userId}});
+    if(userData) {
+      const userUpdated = await User.update(
+        { lastLogin: new Date()},
+        { where: { id: req.params.userId } }
+      );
+      if(userUpdated) {
+        res.send({ message: "User login updated successfully!", userData });
+      } else {
+        res.status(400).send({ message: "Unable to update user data", userData });
       }
     } else {
       res.status(400).send({ message: "User not found", userData });

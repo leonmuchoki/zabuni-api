@@ -10,10 +10,11 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/user", [authJwt.verifyToken, authJwt.isContractingAuthorityOrAdmin], controller.addUser);
+  app.post("/api/user", [authJwt.verifyToken, authJwt.isContractingAuthorityAdminOrSysAdmin], controller.addUser);
   app.get("/api/users/:businessId",[authJwt.verifyToken], controller.findBusinessUsers);
   app.post("/api/user/delete/:userId",[authJwt.verifyToken, isContractingAuthorityAdminOrSysAdmin], controller.deleteUser);
   app.post("/api/user/reset/:userId",[authJwt.verifyToken, isContractingAuthorityAdminOrSysAdmin], controller.resetUserPassword);
+  app.post("/api/user/last/login/:userId",[authJwt.verifyToken], controller.setLastLogin);
 
   app.get("/api/test/all", controller.allAccess);
   app.get(

@@ -44,15 +44,15 @@ app.get(
 const db = require("./models");
 const { createTenderCategory } = require("./controllers/tenderCategory.controller");
 const Role = db.role;
-//db.sequelize.sync({force: true}).then(() => {
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force: true}).then(() => {
+//db.sequelize.sync().then(() => {
   console.log('Drop and Resync Db');
   //--initial();
-  /*createInitialRoles();
+  createInitialRoles();
   createInitialSectors();
   createInitialTenderTypes();
   createInitialTenderCategories();
-  createInitialDocumentTypes();*/
+  createInitialDocumentTypes();
 }).catch((err) => {
   console.log(">> Error resyncing db: ", err);
 });
@@ -82,7 +82,7 @@ require('./routes/issue.routes')(app);
 require('./routes/adminDashBoard.routes')(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

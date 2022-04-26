@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
+      lastLogin: {
+        type: Sequelize.DATE
+      }, 
     });
     return User;
   };
