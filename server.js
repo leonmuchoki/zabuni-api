@@ -80,6 +80,7 @@ require('./routes/businessDocument.routes')(app);
 require('./routes/tenderBidDocument.routes')(app);
 require('./routes/issue.routes')(app);
 require('./routes/adminDashBoard.routes')(app);
+require('./routes/supplierProfile.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
