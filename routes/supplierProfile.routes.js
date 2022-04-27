@@ -10,5 +10,5 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/supplier/stats", [authJwt.verifyToken, authJwt.isSupplier], controller.getSupplierProfileStats);
+  app.get("/api/supplier/stats/:businessId", [authJwt.verifyToken, authJwt.isSupplier], controller.getSupplierProfileStats);
   };
