@@ -10,5 +10,5 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/ca/stats", [authJwt.verifyToken, authJwt.isContractingAuthority], controller.getContractingAuthorityDashboardStats);
+  app.get("/api/ca/stats/:businessId", [authJwt.verifyToken, authJwt.isContractingAuthority], controller.getContractingAuthorityDashboardStats);
   };
