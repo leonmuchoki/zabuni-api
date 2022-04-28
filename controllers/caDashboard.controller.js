@@ -6,7 +6,7 @@ const Issue = db.issue;
 exports.getContractingAuthorityDashboardStats =async(req, res)=> {
     try {
         const businessId = req.params.businessId;
-        const staff = User.findAll({where: {companyId: +businessId}});
+        const staff = await User.findAll({where: {companyId: +businessId}});
         const tenders = await Tender.findAll({where: {businessId: +businessId}});
         const issues = await Issue.findAll({where: {userId: req.userId || 0}});
         
