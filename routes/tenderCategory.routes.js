@@ -17,4 +17,5 @@ module.exports = function(app) {
   );
 
   app.get("/api/tender_categories", controller.getAllTenderCategories);
+  app.delete("/api/tender_categories/:id", controller.deleteTenderCategory);
 };

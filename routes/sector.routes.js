@@ -17,4 +17,5 @@ module.exports = function(app) {
   );
   
   app.get("/api/sectors", controller.getAllSectors);
+  app.delete("/api/sectors/:id", controller.deleteSector);
 };

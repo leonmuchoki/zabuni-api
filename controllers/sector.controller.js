@@ -17,7 +17,17 @@ exports.getAllSectors = (req, res) => {
         return res.status(200).send({sector});
 })
 .catch((err) => {
-    console.log(">> Error while loading  tenders: ", err);
+    console.log(">> Error while loading  sectors: ", err);
     res.status(500).send({ message: err.message });
     });;
+};
+
+exports.deleteSector = (req, res) => {
+  return Sector.destroy({where: {id: req.params.id}}).then((sector) => {
+      return res.status(200).send({sector});
+})
+.catch((err) => {
+  console.log(">> Error while deleting  sectors: ", err);
+  res.status(500).send({ message: err.message });
+  });;
 };

@@ -24,3 +24,13 @@ exports.getAllTenderCategories = (req, res) => {
     res.status(500).send({ message: err.message });
     });;
 };
+
+exports.deleteTenderCategory = (req, res) => {
+  return TenderCategory.destroy({where: {id: req.params.id}}).then((tenderCategory) => {
+      return res.status(200).send({tenderCategory});
+})
+.catch((err) => {
+  console.log(">> Error while deleting  tender category: ", err);
+  res.status(500).send({ message: err.message });
+  });;
+};
