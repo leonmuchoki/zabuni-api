@@ -11,8 +11,8 @@ module.exports = function(app) {
   });
   
   app.post(
-    "/api/tender/categories",
-    [authJwt.verifyToken],
+    "/api/tender_categories",
+    [authJwt.verifyToken, authJwt.isAdmin],
     controller.createTenderCategory
   );
 
