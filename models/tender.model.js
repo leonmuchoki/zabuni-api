@@ -22,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       ratings: {
         type: DataTypes.INTEGER
-      }
+      },
+      awardedBusinessId: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
     });
     return Tender;
   };

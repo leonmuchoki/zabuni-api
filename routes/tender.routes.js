@@ -27,7 +27,8 @@ module.exports = function (app) {
     controller.findCategoryTenders
   );
   app.get("/api/sector/tenders/:sectorId", controller.findSectorTenders);
-  app.post("/api/tender/views/:tenderId", controller.updateViews);
+  app.post("/api/tender/views/:tenderId", [authJwt.verifyToken], controller.updateViews);
+  app.post("/api/tender/award/:tenderId", [authJwt.verifyToken], controller.awardTenderToBusiness);
   app.get(
     "/api/tender/ca/:businessId",
     controller.findContractingAuthorityTenders

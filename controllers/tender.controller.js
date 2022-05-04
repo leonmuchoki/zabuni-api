@@ -126,3 +126,25 @@ exports.updateViews = (req, res) => {
       return res.status(500).send({ message: err.message });
       })
 }
+
+exports.awardTenderToBusiness = (req, res) => {
+  Tender.findOne({where: {id: req.params.tenderId }})
+      .then(tender => {
+      if (!tender) {
+          throw new Error('No record found')
+      }
+
+      let values = { awardedBusinessId : req.body.businessId };
+      return tender.update(values).then( updatedRecord => {
+          return res.send({ message: "Tender awarded successfully!", updatedRecord });
+      }).catch((err) => {
+          console.log(">> Error while awarding tender: ", err);
+          return res.status(500).send({ message: err.message });
+        });
+      
+      })
+      .catch((error) => {
+      // do seomthing with the error
+      return res.status(500).send({ message: err.message });
+      })
+}
