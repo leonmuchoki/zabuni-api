@@ -16,7 +16,7 @@ module.exports = function(app) {
     controller.createTenderBid
   );
   
-  app.get("/api/tender/bid/:tenderId", controller.findBidByTenderId);
-  app.get("/api/bid/:id", controller.findTenderBidById);
-  app.get("/api/business/bid/:businessId", controller.findBidByBusinessId);
+  app.get("/api/tender/bid/:tenderId",[authJwt.verifyToken], controller.findBidByTenderId);
+  app.get("/api/bid/:id", [authJwt.verifyToken], controller.findTenderBidById);
+  app.get("/api/business/bid/:businessId", [authJwt.verifyToken], controller.findBidByBusinessId);
 };

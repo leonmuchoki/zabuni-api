@@ -43,7 +43,7 @@ exports.getAllTenderBids = (req, res) => {
 };
 
 exports.findTenderBidById = (req, res) => {
-    return TenderBid.findAll({where: {id:  req.params.id}}, { include: ["tender", "business"] })
+    return TenderBid.findAll({where: {id:  req.params.id}}, { include: ["tender", "business", "tenderBidDocuments"] })
       .then((tenderBid) => {
         //return tender;
         return res.status(200).send({tenderBid});
@@ -55,7 +55,7 @@ exports.findTenderBidById = (req, res) => {
 };
 
 exports.findBidByTenderId = (req, res) => {
-    return TenderBid.findAll({where: {tenderId:  req.params.tenderId}, include: ["tender", "business"] })
+    return TenderBid.findAll({where: {tenderId:  req.params.tenderId}, include: ["tender", "business", "tenderBidDocuments"] })
       .then((tenderBid) => {
         return res.status(200).send({tenderBid});
       })
@@ -66,7 +66,7 @@ exports.findBidByTenderId = (req, res) => {
 };
 
 exports.findBidByBusinessId = (req, res) => {
-    return TenderBid.findAll({where: {businessId:  req.params.businessId}, include: ["tender", "business"] })
+    return TenderBid.findAll({where: {businessId:  req.params.businessId}, include: ["tender", "business", "tenderBidDocuments"] })
       .then((tenderBid) => {
         return res.status(200).send({tenderBid});
       })
