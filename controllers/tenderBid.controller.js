@@ -75,3 +75,26 @@ exports.findBidByBusinessId = (req, res) => {
         res.status(500).send({ message: err.message });
       });
 };
+
+exports.updateBidData = (req, res) => {
+  TenderBid.findOne({where: {id: req.params.tenderBidId }})
+      .then(tenderBid => {
+      if (!tenderBid) {
+          throw new Error('No record found')
+      }
+
+      let values = { bid_amount : req.body.bid_amount };
+
+      return tenderBid.update(values).then( updatedRecord => {
+          return res.send({ message: "Tender bid updated successfully!", updatedRecord });
+      }).catch((err) => {
+          console.log(">> Error while updating tender bid: ", err);
+          return res.status(500).send({ message: err.message });
+        });
+      
+      })
+      .catch((error) => {
+      // do seomthing with the error
+      return res.status(500).send({ message: err.message });
+      })
+}

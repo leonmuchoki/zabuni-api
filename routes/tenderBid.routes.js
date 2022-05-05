@@ -15,8 +15,13 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isSupplier],
     controller.createTenderBid
   );
+  app.put(
+    "/api/tender/bid/update/:tenderBidId",
+    [authJwt.verifyToken, authJwt.isSupplier],
+    controller.updateBidData
+  );
   
-  app.get("/api/tender/bid/:tenderId",[authJwt.verifyToken], controller.findBidByTenderId);
+  app.get("/api/tender/bid/:tenderId", controller.findBidByTenderId);
   app.get("/api/bid/:id", [authJwt.verifyToken], controller.findTenderBidById);
   app.get("/api/business/bid/:businessId", [authJwt.verifyToken], controller.findBidByBusinessId);
 };
